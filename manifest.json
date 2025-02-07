@@ -3,18 +3,16 @@
     "name": "Burnout Tracker",
     "version": "1.0",
     "description": "Track burnout indicators and prevent overworking.",
-    "permissions": ["tabs", "webNavigation", "storage", "idle", "downloads", "history", "notifications"],
+    "permissions": ["storage", "tabs", "scripting"],
     "background": {
       "service_worker": "background.js"
-    },
-    "action": {
-      "default_popup": "popup.html"
     },
     "content_scripts": [
       {
         "matches": ["<all_urls>"],
         "js": ["content.js"]
       }
-    ]
+    ],
+    "host_permissions": ["<all_urls>"]
   }
   

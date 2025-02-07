@@ -1,70 +1,35 @@
-const SHEETS_WEBHOOK_URL = "YOUR_GOOGLE_APPS_SCRIPT_URL"; // Replace with your actual web app URL
+const SHEETS_WEBHOOK_URL = "YOUR_GOOGLE_APPS_SCRIPT_URL"; // Replace with your actual Google Apps Script URL
 
-// Function to send data to Google Sheets
-function sendDataToGoogleSheets(data) {
-    fetch(SHEETS_WEBHOOK_URL, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
-    })
-    .then(response => response.json())
-    .then(result => console.log("Data sent:", result))
-    .catch(error => console.error("Error sending data:", error));
+// Function to initialize the extension when Chrome starts or when installed
+function initializeExtension() {
+    chrome.storage.local.get(["userUUID"], result => {
+        if (!result.userUUID) {
+            let newUUID = crypto.randomUUID();
+            chrome.storage.local.set({ userUUID: newUUID });
+        }
+    });
+
+    // Inject the burnout modal script into all open tabs when Chrome starts
+    chrome.tabs.query({}, function (tabs) {
+        tabs.forEach(tab => {
+            if (tab.url.startsWith("http")) {
+                chrome.scripting.executeScript({
+                    target: { tabId: tab.id },
+                    files: ["content.js"]
+                });
+            }
+        });
+    });
 }
 
-// Generate Unique User ID if not already set
-chrome.storage.local.get(["userUUID"], result => {
-    if (!result.userUUID) {
-        let newUUID = crypto.randomUUID();
-        chrome.storage.local.set({ userUUID: newUUID });
-    }
+// Trigger when Chrome starts
+chrome.runtime.onStartup.addListener(() => {
+    console.log("Burnout Tracker initialized on Chrome startup.");
+    initializeExtension();
 });
 
-chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-    if (changeInfo.status === "complete" && tab.url) {
-        chrome.storage.local.get(["userUUID"], userResult => {
-            let userUUID = userResult.userUUID;
-            let sessionData = {
-                timestamp: new Date().toISOString(),
-                userUUID: userUUID,
-                category: "work", // Replace with actual category detection if needed
-                timeSpent: Math.floor(Math.random() * 300), // Placeholder for demo
-                tabSwitchCount: Math.floor(Math.random() * 10),
-                openTabsCount: Math.floor(Math.random() * 15),
-                question: null,
-                response: null
-            };
-
-            sendDataToGoogleSheets(sessionData);
-        });
-    }
-});
-
-// Handle messages from content.js (inactivity tracking)
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    if (request.action === "sendData") {
-        sendDataToGoogleSheets(request.data);
-    }
-});
-
-// Burnout Question Response Handling
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    if (request.action === "submitResponse") {
-        chrome.storage.local.get(["userUUID"], result => {
-            let responseData = {
-                timestamp: new Date().toISOString(),
-                userUUID: result.userUUID,
-                category: null,
-                timeSpent: null,
-                tabSwitchCount: null,
-                openTabsCount: null,
-                question: request.question,
-                response: request.response
-            };
-
-            sendDataToGoogleSheets(responseData);
-        });
-    }
+// Trigger when the extension is installed or updated
+chrome.runtime.onInstalled.addListener(() => {
+    console.log("Burnout Tracker installed or updated.");
+    initializeExtension();
 });
