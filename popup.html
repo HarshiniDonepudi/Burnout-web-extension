@@ -4,8 +4,28 @@
   <meta charset="UTF-8">
   <title>Burnout Tracker Metrics</title>
   <style>
-    body { font-family: sans-serif; padding: 10px; }
-    p { margin: 5px 0; }
+    /* Pastel blue, pink, yellow gradient background with glass effect */
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(135deg, #AEC6CF, #FFD1DC, #FFF5BA);
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+    #stats {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #555;
+    }
+    p {
+      margin: 8px 0;
+    }
   </style>
 </head>
 <body>
@@ -13,27 +33,6 @@
   <div id="stats">
     <p>Loading metrics...</p>
   </div>
-  
-  <script>
-    function updateStats() {
-      chrome.storage.local.get(
-        ['userId', 'workTime', 'leisureTime', 'stressSearchCount', 'tabSwitchCount', 'openTabsCount', 'tabSwitchRate'],
-        (data) => {
-          const workMinutes = data.workTime ? (data.workTime / 60000).toFixed(2) : "0.00";
-          const leisureMinutes = data.leisureTime ? (data.leisureTime / 60000).toFixed(2) : "0.00";
-          document.getElementById('stats').innerHTML = `
-            <p><strong>User ID:</strong> ${data.userId || 'N/A'}</p>
-            <p><strong>Work Time:</strong> ${workMinutes} minutes</p>
-            <p><strong>Leisure Time:</strong> ${leisureMinutes} minutes</p>
-            <p><strong>Stress-Related Searches:</strong> ${data.stressSearchCount || 0}</p>
-            <p><strong>Tab Switches (current count):</strong> ${data.tabSwitchCount || 0}</p>
-            <p><strong>Tab Switch Rate (per minute):</strong> ${data.tabSwitchRate || 0}</p>
-            <p><strong>Current Open Tabs:</strong> ${data.openTabsCount || 0}</p>
-          `;
-        }
-      );
-    }
-    updateStats();
-  </script>
+  <script src="popup.js"></script>
 </body>
 </html>

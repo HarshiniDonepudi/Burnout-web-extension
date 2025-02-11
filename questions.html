@@ -4,19 +4,94 @@
   <meta charset="UTF-8">
   <title>Periodic Check-In</title>
   <style>
-    body { font-family: sans-serif; margin: 20px; }
-    .question { margin-bottom: 15px; }
-    label { display: block; margin-bottom: 5px; }
+    /* Fullscreen container for the captured background */
+    #background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-size: cover;
+      background-position: center;
+      z-index: 1;
+    }
+    /* Fullscreen overlay with glass effect */
+    #overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(10px);
+      z-index: 2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 4px solid transparent;
+      border-image: linear-gradient(135deg, #AEC6CF, #FFD1DC, #FFF5BA) 1;
+      border-radius: 16px;
+      margin: 20px;
+    }
+    /* Styling for the question form */
+    #questionForm {
+      background: rgba(255, 255, 255, 0.9);
+      padding: 20px 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      max-width: 90%;
+      text-align: center;
+      font-family: 'Arial', sans-serif;
+      color: #333;
+    }
+    #questionForm label {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+    #questionForm input,
+    #questionForm select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+    #questionForm button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #FFD1DC;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      color: #333;
+    }
+    #questionForm button:hover {
+      background-color: #FFC0CB;
+    }
+    /* Prevent scrolling while locked */
+    html, body {
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
   </style>
 </head>
 <body>
-  <h1>How are you doing?</h1>
-  <form id="questionForm">
-    <div id="questionsContainer"></div>
-    <button type="submit">Submit Responses</button>
-  </form>
-  
-  <!-- Reference external JavaScript file -->
+  <!-- Container for the captured screenshot -->
+  <div id="background"></div>
+  <!-- Overlay that locks the screen and displays the check-in form -->
+  <div id="overlay">
+    <form id="questionForm">
+      <div id="questionsContainer">
+        <!-- A single random question will be inserted here -->
+      </div>
+      <button type="submit">Submit Answer</button>
+    </form>
+  </div>
   <script src="questions.js"></script>
 </body>
 </html>
