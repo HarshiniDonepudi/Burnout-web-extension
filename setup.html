@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Burnout Tracker Setup</title>
+  <style>
+    body { font-family: sans-serif; margin: 20px; }
+    label { display: block; margin-top: 10px; }
+    input, select { width: 300px; }
+  </style>
+</head>
+<body>
+  <h1>Welcome to Burnout Tracker Setup</h1>
+  <form id="setupForm">
+    <label for="name">Your Name:</label>
+    <input type="text" id="name" required>
+
+    <label for="industry">What industry do you work in?</label>
+    <input type="text" id="industry" required>
+
+    <label for="jobRole">What is your job role?</label>
+    <input type="text" id="jobRole" required>
+
+    <label for="workArrangement">Do you work Remote, Hybrid, or Onsite?</label>
+    <select id="workArrangement" required>
+      <option value="">Select an option</option>
+      <option value="Remote">Remote</option>
+      <option value="Hybrid">Hybrid</option>
+      <option value="Onsite">Onsite</option>
+    </select>
+
+    <br><br>
+    <button type="submit">Save Setup</button>
+  </form>
+  
+  <!-- Reference external JavaScript file -->
+  <script src="setup.js"></script>
+</body>
+</html>
