@@ -28,7 +28,7 @@ The check‑in questions are designed not only to prompt self-reflection but als
 
 ### Morning (5 AM – 12 PM)
 - **`sleep_quality`**: *How well did you sleep last night? (Scale 1-10)*
-- **`hours_sleep`**: *How many hours of sleep did you get? (Number)* ( Not including ) 
+- **`hours_sleep`**: *How many hours of sleep did you get? (Number)* 
 - **`morning_energy`**: *What's your energy level this morning? (Scale 1-10)*
 - **`morning_mood`**: *How are you feeling this morning? (Scale 1-10)*
 
