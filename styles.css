@@ -1,6 +1,14 @@
 body {
     font-family: "Open Sans", sans-serif;
+    /* Vertical gradient */
     background: linear-gradient(to bottom, #B5E9E9, #FCE5EF, #FFEBB2, #FFCABB);
+  
+    /* Make the background taller than the element (200% height) */
+    background-size: 100% 200%;
+  
+    /* Animate the background position vertically */
+    animation: verticalGradient 20s ease-in-out infinite;
+  
     color: #2D5957;
     text-align: center;
     display: flex;
@@ -8,7 +16,23 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
-}
+  }
+  
+  @keyframes verticalGradient {
+    0% {
+      background-position: 0% 0%;
+    }
+    50% {
+      /* Shift down so the bottom part of the gradient is now visible */
+      background-position: 0% 50%;
+    }
+    100% {
+      /* Return to the starting position */
+      background-position: 50% 0%;
+    }
+  }
+  
+
 
 h2 {
     font-family: "Roca Bold", sans-serif;
