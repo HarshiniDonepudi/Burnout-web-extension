@@ -1,0 +1,57 @@
+body {
+    font-family: "Open Sans", sans-serif;
+    background: linear-gradient(to bottom, #B5E9E9, #FCE5EF, #FFEBB2, #FFCABB);
+    color: #2D5957;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+h2 {
+    font-family: "Roca Bold", sans-serif;
+}
+
+#content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    width: 90%;
+}
+
+button {
+    background: #3FA5AD;
+    color: white;
+    font-family: "Roca Bold", sans-serif;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+button:hover {
+    background: #2D5957;
+}
+
+.likert-btn {
+    background: white;
+    color: #3FA5AD;
+    border: 2px solid #3FA5AD;
+    padding: 5px 10px;
+    margin: 5px;
+    cursor: pointer;
+}
+
+.likert-btn.selected {
+    background: #3FA5AD;
+    color: white;
+}
+
+.hidden {
+    display: none;
+}

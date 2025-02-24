@@ -1,24 +1,29 @@
-
-
 // ---------- Global Variables and Constants ----------
 let sessionStart = null;
 const MAX_SESSION_DURATION = 2 * 60 * 60 * 1000; // 2 hours in ms
 let tabSwitchCount = 0;
-
-// Global flag indicating if a check-in (questions.html) is active.
-let checkinActive = false;
 
 // Variables for tracking active tab time
 let currentActiveTabId = null;
 let currentActiveCategory = null; // "work", "leisure", or null
 let activeStartTime = 0; // Timestamp when the current tab became active
 
-const defaultWorkDomains = ['outlook.com', 'office.com', 'slack.com', 'github.com','linkedin.com','gmail.com'];
-const defaultLeisureDomains = ['youtube.com', 'netflix.com', 'reddit.com', 'twitter.com','instagram.com'];
+<<<<<<< HEAD
+const defaultWorkDomains = ['outlook.com', 'office.com', 'slack.com', 'github.com', 'linkedin.com', 'gmail.com'];
+const defaultLeisureDomains = ['youtube.com', 'netflix.com', 'reddit.com', 'twitter.com', 'instagram.com'];
 const stressKeywords = ['burnout', 'stress', 'overworked', 'exhausted'];
 
-// Google Sheets endpoint – replace with your deployed Google Apps Script URL.
-const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbzOBG79BY9kNoM2_o24cFvrnCylioKfJw5q_rwwTYq1rYlcsatBmbrICqNAdUZ90J-GIA/exec";
+// Google Sheets endpoints – replace with your deployed web app URLs.
+const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec";
+const GOOGLE_SHEETS_CALENDAR_URL = "https://script.google.com/macros/s/YOUR_CALENDAR_SCRIPT_ID/exec";
+=======
+const defaultWorkDomains = ['workmail.com', 'office.com', 'slack.com', 'github.com'];
+const defaultLeisureDomains = ['youtube.com', 'netflix.com', 'reddit.com', 'twitter.com'];
+const stressKeywords = ['burnout', 'stress', 'overworked', 'exhausted'];
+
+// Google Sheets endpoint (replace with your actual web app URL)
+const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbwtsaEKPo-PV1f4lRWDM9Coc3-4F685qGZM6sTyXvK_GkyK5Mhc9d5vu9VAwXiyGBeh-A/exec";
+>>>>>>> parent of 60718da (Final)
 
 // ---------- Initialization ----------
 chrome.runtime.onInstalled.addListener(() => {
@@ -33,17 +38,23 @@ chrome.runtime.onInstalled.addListener(() => {
   });
 });
 
-// Every minute, update the tab switch rate and reset tabSwitchCount.
+// Create an alarm for syncing data every 15 minutes.
+chrome.alarms.create('syncData', { periodInMinutes: 15 });
+
+// Every minute, update tabSwitchRate and reset tabSwitchCount.
 setInterval(() => {
   chrome.storage.local.set({ tabSwitchRate: tabSwitchCount });
   console.log("Tab Switch Rate (per minute):", tabSwitchCount);
-  syncMetrics();
   tabSwitchCount = 0;
 }, 60 * 1000);
 
+<<<<<<< HEAD
+// Create an alarm to sync calendar data every minute.
+chrome.alarms.create("calendarSync", { periodInMinutes: 1 });
+
 // ---------- Helper Functions ----------
 
-// Immediately retrieve the latest metrics and send them.
+// Retrieve browsing metrics from storage and send them.
 function syncMetrics() {
   chrome.storage.local.get(
     ['workTime', 'leisureTime', 'stressSearchCount', 'tabSwitchCount', 'openTabsCount', 'tabSwitchRate'],
@@ -53,7 +64,10 @@ function syncMetrics() {
   );
 }
 
-// Function to send data immediately to Google Sheets.
+// Send browsing data to the primary Google Sheet.
+=======
+// ---------- Helper Function: Send Data to Google Sheets ----------
+>>>>>>> parent of 60718da (Final)
 function sendDataToGoogleSheets(data) {
   chrome.storage.local.get("userId", (result) => {
     if (!result.userId) {
@@ -68,34 +82,103 @@ function sendDataToGoogleSheets(data) {
       body: JSON.stringify(data)
     })
       .then(response => response.text())
-      .then(text => console.log("Data sent:", text))
-      .catch(error => console.error("Error sending data:", error));
+      .then(text => console.log("Browsing data sent:", text))
+      .catch(error => console.error("Error sending browsing data:", error));
   });
 }
 
-// Updates the time spent on the current active category.
+<<<<<<< HEAD
+// Send calendar data to the separate Google Sheet (same spreadsheet, different tab).
+function sendCalendarDataToGoogleSheets(data) {
+  chrome.storage.local.get("userId", (result) => {
+    if (!result.userId) {
+      result.userId = crypto.randomUUID();
+      chrome.storage.local.set({ userId: result.userId });
+    }
+    data.userId = result.userId;
+    data.timestamp = new Date().toISOString();
+    fetch(GOOGLE_SHEETS_CALENDAR_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    })
+      .then(response => response.text())
+      .then(text => console.log("Calendar data sent:", text))
+      .catch(error => console.error("Error sending calendar data:", error));
+  });
+}
+
+// ---------- Google Calendar Integration ----------
+// Fetch Google Calendar events and send them to the calendar sheet.
+function getGoogleCalendarEvents(callback) {
+  chrome.identity.getAuthToken({ interactive: true }, function(token) {
+    if (chrome.runtime.lastError) {
+      console.error("Calendar auth error:", chrome.runtime.lastError);
+      if (callback) callback(null);
+      return;
+    }
+    fetch("https://www.googleapis.com/calendar/v3/calendars/primary/events", {
+      headers: {
+        "Authorization": "Bearer " + token
+      }
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.items && Array.isArray(data.items)) {
+          console.log("Calendar events fetched:", data.items.length);
+          // Send the entire calendar API response to the calendar sheet.
+          sendCalendarDataToGoogleSheets({ event: 'calendarData', data: data });
+        }
+        if (callback) callback(data);
+      })
+      .catch(err => {
+        console.error("Error fetching calendar events:", err);
+        if (callback) callback(null);
+      });
+  });
+}
+
+// ---------- Alarm Listener ----------
+chrome.alarms.onAlarm.addListener((alarm) => {
+  if (alarm.name === "calendarSync") {
+    getGoogleCalendarEvents();
+  }
+});
+
+// ---------- Active Tab & Time Tracking ----------
+
+// Update the time spent on the current active category.
 function updateActiveCategoryTime() {
   if (currentActiveCategory && activeStartTime) {
-    const elapsed = Date.now() - activeStartTime; // elapsed time in ms
+    const elapsed = Date.now() - activeStartTime;
+=======
+// ---------- Function to Update Active Category Time ----------
+function updateActiveCategoryTime() {
+  if (currentActiveCategory && activeStartTime) {
+    const elapsed = Date.now() - activeStartTime; // Time in ms
+>>>>>>> parent of 60718da (Final)
     chrome.storage.local.get([currentActiveCategory + "Time"], (result) => {
       let currentTime = result[currentActiveCategory + "Time"] || 0;
       currentTime += elapsed;
-      let update = {};
+      const update = {};
       update[currentActiveCategory + "Time"] = currentTime;
       chrome.storage.local.set(update, () => {
         console.log("Updated " + currentActiveCategory + "Time by", elapsed, "ms");
-        syncMetrics();
       });
     });
   }
   activeStartTime = Date.now();
 }
 
+<<<<<<< HEAD
+// When a tab is activated, update previous tab time and track the new tab.
+=======
 // ---------- Listeners for Active Tab and Time Tracking ----------
 
-// When a tab is activated, update the previous tab’s time and start tracking the new one.
+// When a tab is activated, update the time spent on the previous tab and start tracking the new one.
+>>>>>>> parent of 60718da (Final)
 chrome.tabs.onActivated.addListener((activeInfo) => {
-  updateActiveCategoryTime();
+  updateActiveCategoryTime(); // Update time for previous active tab
   currentActiveTabId = activeInfo.tabId;
   chrome.tabs.get(activeInfo.tabId, (tab) => {
     if (chrome.runtime.lastError) return;
@@ -110,9 +193,8 @@ chrome.tabs.onActivated.addListener((activeInfo) => {
       leisureDomains.forEach(domain => {
         if (url.includes(domain.toLowerCase())) category = 'leisure';
       });
-      currentActiveCategory = category;
-      activeStartTime = Date.now();
-      syncMetrics();
+      currentActiveCategory = category; // May be null if no match
+      activeStartTime = Date.now(); // Reset start time for new tab
     });
   });
 });
@@ -124,7 +206,6 @@ chrome.tabs.onRemoved.addListener((tabId, removeInfo) => {
     currentActiveCategory = null;
     activeStartTime = 0;
     currentActiveTabId = null;
-    syncMetrics();
   }
 });
 
@@ -160,11 +241,15 @@ chrome.tabs.onActivated.addListener(() => {
     chrome.storage.local.set({
       tabSwitchCount: tabSwitchCount,
       openTabsCount: tabs.length
-    }, syncMetrics);
+    });
   });
 });
 
-// Detect stress-related searches and immediately sync.
+<<<<<<< HEAD
+// Detect stress-related searches and sync.
+=======
+// Detect stress-related searches.
+>>>>>>> parent of 60718da (Final)
 chrome.webRequest.onBeforeRequest.addListener(
   (details) => {
     const url = details.url.toLowerCase();
@@ -172,7 +257,7 @@ chrome.webRequest.onBeforeRequest.addListener(
       chrome.storage.local.get(['stressSearchCount'], (result) => {
         let count = result.stressSearchCount || 0;
         count++;
-        chrome.storage.local.set({ stressSearchCount: count }, syncMetrics);
+        chrome.storage.local.set({ stressSearchCount: count });
       });
     }
   },
@@ -180,28 +265,36 @@ chrome.webRequest.onBeforeRequest.addListener(
   []
 );
 
-// ---------- New Tab Creation: Show Check-In Every 4th New Tab & Block Others When Active ----------
-chrome.tabs.onCreated.addListener((tab) => {
-  const checkinUrl = chrome.runtime.getURL("questions.html");
-  if (checkinActive) {
-    // If a check-in is active, block any new tab that isn’t the check-in page.
-    if (!tab.url || tab.url.indexOf(checkinUrl) === -1) {
-      chrome.tabs.remove(tab.id);
-    }
-    return; // Do not proceed with normal new-tab counting.
+<<<<<<< HEAD
+// ---------- Message Listener ----------
+=======
+// Sync data to Google Sheets every 15 minutes.
+chrome.alarms.onAlarm.addListener((alarm) => {
+  if (alarm.name === 'syncData') {
+    chrome.storage.local.get(
+      ['workTime', 'leisureTime', 'stressSearchCount', 'tabSwitchCount', 'openTabsCount', 'tabSwitchRate'],
+      (data) => {
+        sendDataToGoogleSheets({ event: 'periodicSync', data: data });
+      }
+    );
   }
-  // Normal new-tab counting: every 4th new tab shows the check-in page.
-  chrome.storage.local.get("newTabCount", (data) => {
-    let count = data.newTabCount || 0;
-    count++;
-    if (count % 4 === 0) {
-      chrome.tabs.create({ url: checkinUrl });
+});
+
+// Open check-in questions (questions.html) every time a new tab is created if 15 minutes have passed.
+chrome.tabs.onCreated.addListener(() => {
+  chrome.storage.local.get("lastQuestionsShown", (data) => {
+    const lastTime = data.lastQuestionsShown || 0;
+    const now = Date.now();
+    if (now - lastTime >= 15 * 60 * 1000) { // 15-minute interval
+      chrome.storage.local.set({ lastQuestionsShown: now }, () => {
+        chrome.tabs.create({ url: chrome.runtime.getURL("questions.html") });
+      });
     }
-    chrome.storage.local.set({ newTabCount: count });
   });
 });
 
-// ---------- Listen for Messages from Setup or Check-In Pages ----------
+// Listen for messages (from setup or periodic check-in pages).
+>>>>>>> parent of 60718da (Final)
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === 'periodicResponse') {
     sendDataToGoogleSheets({ event: 'periodicResponse', responses: message.responses });
@@ -209,9 +302,5 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   } else if (message.type === 'setupResponse') {
     sendDataToGoogleSheets({ event: 'setupResponse', responses: message.responses });
     sendResponse({ status: 'success' });
-  } else if (message.type === 'checkinActive') {
-    // Set the global check-in flag based on the message.
-    checkinActive = message.active;
-    sendResponse({ status: 'received' });
   }
 });

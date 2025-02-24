@@ -1,97 +1,40 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
+<<<<<<< HEAD
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Juggl Insights</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="content">
+    <div id="question-container">
+      <h2 id="question-text">Loading...</h2>
+      <div id="options-container"></div>
+      <button id="submit-button">Submit</button>
+    </div>
+    <div id="quote-container" class="hidden">
+      <h2 id="quote-text">"An unexamined life is not worth living." - Socrates</h2>
+    </div>
+  </div>
+=======
   <title>Periodic Check-In</title>
   <style>
-    /* Fullscreen container for the captured background */
-    #background {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background-size: cover;
-      background-position: center;
-      z-index: 1;
-    }
-    /* Fullscreen overlay with glass effect */
-    #overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(255, 255, 255, 0.7);
-      backdrop-filter: blur(10px);
-      z-index: 2;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border: 4px solid transparent;
-      border-image: linear-gradient(135deg, #AEC6CF, #FFD1DC, #FFF5BA) 1;
-      border-radius: 16px;
-      margin: 20px;
-    }
-    /* Styling for the question form */
-    #questionForm {
-      background: rgba(255, 255, 255, 0.9);
-      padding: 20px 30px;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      max-width: 90%;
-      text-align: center;
-      font-family: 'Arial', sans-serif;
-      color: #333;
-    }
-    #questionForm label {
-      display: block;
-      margin-bottom: 10px;
-      font-size: 18px;
-      font-weight: bold;
-    }
-    #questionForm input,
-    #questionForm select {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 15px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      font-size: 16px;
-    }
-    #questionForm button {
-      padding: 10px 20px;
-      font-size: 16px;
-      background-color: #FFD1DC;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      color: #333;
-    }
-    #questionForm button:hover {
-      background-color: #FFC0CB;
-    }
-    /* Prevent scrolling while locked */
-    html, body {
-      overflow: hidden;
-      margin: 0;
-      padding: 0;
-      height: 100%;
-    }
+    body { font-family: sans-serif; margin: 20px; }
+    .question { margin-bottom: 15px; }
+    label { display: block; margin-bottom: 5px; }
   </style>
 </head>
 <body>
-  <!-- Container for the captured screenshot -->
-  <div id="background"></div>
-  <!-- Overlay that locks the screen and displays the check-in form -->
-  <div id="overlay">
-    <form id="questionForm">
-      <div id="questionsContainer">
-        <!-- A single random question will be inserted here -->
-      </div>
-      <button type="submit">Submit Answer</button>
-    </form>
-  </div>
+  <h1>How are you doing?</h1>
+  <form id="questionForm">
+    <div id="questionsContainer"></div>
+    <button type="submit">Submit Responses</button>
+  </form>
+  
+  <!-- Reference external JavaScript file -->
+>>>>>>> parent of 60718da (Final)
   <script src="questions.js"></script>
 </body>
 </html>

@@ -1,11 +1,17 @@
 {
   "manifest_version": 3,
   "name": "Burnout Tracker",
-  "version": "1.2",
-  "description": "Tracks your browsing activity (time on work vs. leisure sites), tab switching rate, and more. Data is synced immediately to Google Sheets.",
+<<<<<<< HEAD
+  "version": "1.3",
+  "description": "Tracks your browsing and calendar data to help detect burnout. Data is synced immediately to Google Sheets.",
+=======
+  "version": "1.1",
+  "description": "Tracks your browsing, work/leisure activity, and periodic well-being check-ins. Data is synced to Google Sheets.",
+>>>>>>> parent of 60718da (Final)
   "permissions": [
     "storage",
     "tabs",
+    "identity",
     "idle",
     "webNavigation",
     "alarms",
@@ -15,13 +21,23 @@
   ],
   "host_permissions": [
     "<all_urls>",
-    "https://script.google.com/*"
+    "https://script.google.com/*",
+    "https://www.googleapis.com/*"
   ],
+  "oauth2": {
+    "client_id": "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com",
+    "scopes": [
+      "https://www.googleapis.com/auth/calendar.readonly"
+    ]
+  },
+  "chrome_url_overrides": {
+    "newtab": "questions.html"
+  },
   "background": {
     "service_worker": "background.js"
   },
   "action": {
     "default_popup": "popup.html"
-   
+  
   }
 }

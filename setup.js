@@ -17,9 +17,9 @@ document.getElementById('setupForm').addEventListener('submit', function(e) {
     chrome.storage.local.set(setupData, () => {
       chrome.runtime.sendMessage({ type: 'setupResponse', responses: setupData }, (response) => {
         if (response && response.status === 'success') {
-
+          alert('Setup Complete! Your data has been saved.');
         } else {
-          
+          alert('Setup Complete! But there was an error saving your data to the sheet.');
         }
         window.close();
       });
