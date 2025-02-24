@@ -36,9 +36,9 @@ document.addEventListener("DOMContentLoaded", function () {
   
   const currentHour = new Date().getHours();
   let mode;
-  if (currentHour >= 5 && currentHour < 14) {
+  if (currentHour >= 5 && currentHour < 12) {
     mode = "morning";
-  } else if (currentHour >= 14 && currentHour < 17) {
+  } else if (currentHour >= 12 && currentHour < 17) {
     mode = "afternoon";
   } else {
     mode = "evening";

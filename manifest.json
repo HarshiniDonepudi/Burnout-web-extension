@@ -20,7 +20,7 @@
     "https://www.googleapis.com/*"
   ],
   "oauth2": {
-    "client_id": "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com",
+    "client_id": "609443598764-sq537q35iabph1pp4tquubgs8ke79u4v.apps.googleusercontent.com",
     "scopes": [
       "https://www.googleapis.com/auth/calendar.readonly"
     ]
@@ -33,5 +33,6 @@
   },
   "action": {
     "default_popup": "popup.html"
+  
   }
 }
