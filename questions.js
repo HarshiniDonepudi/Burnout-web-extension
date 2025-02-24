@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // Returns an array of sequential questions for Morning and Evening.
 function getSequentialQuestions(mode) {
   if (mode === "morning") {
@@ -61,7 +60,7 @@ document.addEventListener("DOMContentLoaded", function () {
     optionsContainer.innerHTML = "";
     
     if (selectedQuestion.type === "scale") {
-      // Create buttons for options 1 to 5.
+      // Create buttons for options 1-5.
       for (let i = 1; i <= 5; i++) {
         const btn = document.createElement("button");
         btn.className = "likert-btn";
@@ -100,15 +99,15 @@ document.addEventListener("DOMContentLoaded", function () {
         });
       };
     }
-    
   } else {
-    // Sequential mode (morning and evening).
+    // Sequential mode for morning and evening.
+    const questions = getSequentialQuestions(mode);
     // Retrieve saved state from localStorage.
     let state = JSON.parse(localStorage.getItem("sequentialState"));
     if (!state || state.mode !== mode) {
       state = { currentIndex: 0, responses: {}, mode: mode, complete: false };
     }
-    // If state is complete, show quote.
+    // If complete, show only the quote.
     if (state.complete) {
       document.getElementById("question-container").classList.add("hidden");
       document.getElementById("quote-container").classList.remove("hidden");
@@ -117,19 +116,16 @@ document.addEventListener("DOMContentLoaded", function () {
     
     let currentQuestionIndex = state.currentIndex;
     let responses = state.responses;
-    const questions = getSequentialQuestions(mode);
-    
     const questionTextElem = document.getElementById("question-text");
     const optionsContainer = document.getElementById("options-container");
     const submitButton = document.getElementById("submit-button");
     const quoteContainer = document.getElementById("quote-container");
     
-    // Hide quote container initially.
     quoteContainer.classList.add("hidden");
     
     function loadQuestion() {
       if (currentQuestionIndex >= questions.length) {
-        // All questions answered: mark as complete.
+        // All questions answered: mark complete.
         state.complete = true;
         localStorage.setItem("sequentialState", JSON.stringify(state));
         document.getElementById("question-container").classList.add("hidden");
@@ -148,7 +144,6 @@ document.addEventListener("DOMContentLoaded", function () {
       inputElem.name = q.id;
       inputElem.required = true;
       if (q.type === "scale") {
-        // For morning, scale is 1-5; for evening, scale is 1-10.
         inputElem.min = 1;
         inputElem.max = (mode === "evening") ? 10 : 5;
       } else {
@@ -179,80 +174,3 @@ document.addEventListener("DOMContentLoaded", function () {
     loadQuestion();
   }
 });
-=======
-// Function to determine which questions to display based on the current hour.
-function getPeriodicQuestions() {
-    const hour = new Date().getHours();
-    if (hour >= 5 && hour < 12) {
-      return [
-        { id: 'sleep', question: "How well did you sleep?", type: "scale" },
-        { id: 'morning_energy', question: "What's your energy level this morning?", type: "scale" },
-        { id: 'morning_mood', question: "How are you feeling today?", type: "scale" }
-      ];
-    } else if (hour >= 12 && hour < 17) {
-      return [
-        { id: 'stress', question: "How would you rate your stress levels?", type: "scale" },
-        { id: 'productivity', question: "How productive do you feel?", type: "scale" },
-        { id: 'breaks', question: "Are you taking enough breaks today?", type: "choice", options: ["Yes", "Sometimes", "Rarely", "No"] }
-      ];
-    } else {
-      return [
-        { id: 'satisfaction', question: "Do you feel satisfied with today's work?", type: "choice", options: ["Yes", "Somewhat", "Not much", "No"] },
-        { id: 'stress_carryover', question: "Are you carrying work stress into the evening?", type: "choice", options: ["No", "A little", "A lot", "Completely overwhelmed"] },
-        { id: 'evening_mood', question: "How are you feeling now?", type: "scale" }
-      ];
-    }
-  }
-  
-  const questions = getPeriodicQuestions();
-  const container = document.getElementById('questionsContainer');
-  
-  questions.forEach(q => {
-    const div = document.createElement('div');
-    div.className = 'question';
-    const label = document.createElement('label');
-    label.textContent = q.question;
-    label.htmlFor = q.id;
-    div.appendChild(label);
-    
-    if (q.type === 'scale') {
-      const input = document.createElement('input');
-      input.type = 'number';
-      input.id = q.id;
-      input.name = q.id;
-      input.min = 1;
-      input.max = 10;
-      input.required = true;
-      div.appendChild(input);
-    } else if (q.type === 'choice') {
-      const select = document.createElement('select');
-      select.id = q.id;
-      select.name = q.id;
-      q.options.forEach(optionText => {
-        const option = document.createElement('option');
-        option.value = optionText;
-        option.textContent = optionText;
-        select.appendChild(option);
-      });
-      div.appendChild(select);
-    }
-    container.appendChild(div);
-  });
-  
-  document.getElementById('questionForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const responses = {};
-    questions.forEach(q => {
-      responses[q.id] = document.getElementById(q.id).value;
-    });
-    chrome.runtime.sendMessage({ type: 'periodicResponse', responses: responses }, (response) => {
-      if (response && response.status === 'success') {
-        alert('Responses submitted successfully!');
-        window.close();
-      } else {
-        alert('Error submitting responses.');
-      }
-    });
-  });
-  
->>>>>>> parent of 60718da (Final)

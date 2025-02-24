@@ -1,39 +1,87 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Burnout Tracker Setup</title>
   <style>
-    body { font-family: sans-serif; margin: 20px; }
-    label { display: block; margin-top: 10px; }
-    input, select { width: 300px; }
+    body {
+      font-family: "Open Sans", sans-serif;
+      background: linear-gradient(to bottom, #B5E9E9, #FCE5EF, #FFEBB2, #FFCABB);
+      color: #2D5957;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    h2 {
+      font-family: "Roca Bold", sans-serif;
+    }
+
+    #content {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+      max-width: 500px;
+      width: 90%;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+
+    input, select {
+      width: 300px;
+      padding: 5px;
+      margin-top: 5px;
+    }
+
+    button {
+      background: #3FA5AD;
+      color: white;
+      font-family: "Roca Bold", sans-serif;
+      border: none;
+      padding: 10px 15px;
+      cursor: pointer;
+      border-radius: 5px;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background: #2D5957;
+    }
   </style>
 </head>
 <body>
-  <h1>Welcome to Burnout Tracker Setup</h1>
-  <form id="setupForm">
-    <label for="name">Your Name:</label>
-    <input type="text" id="name" required>
+  <div id="content">
+    <h2>Welcome to Burnout Tracker Setup</h2>
+    <form id="setupForm">
+      <label for="name">Your Name:</label>
+      <input type="text" id="name" required>
 
-    <label for="industry">What industry do you work in?</label>
-    <input type="text" id="industry" required>
+      <label for="industry">What industry do you work in?</label>
+      <input type="text" id="industry" required>
 
-    <label for="jobRole">What is your job role?</label>
-    <input type="text" id="jobRole" required>
+      <label for="jobRole">What is your job role?</label>
+      <input type="text" id="jobRole" required>
 
-    <label for="workArrangement">Do you work Remote, Hybrid, or Onsite?</label>
-    <select id="workArrangement" required>
-      <option value="">Select an option</option>
-      <option value="Remote">Remote</option>
-      <option value="Hybrid">Hybrid</option>
-      <option value="Onsite">Onsite</option>
-    </select>
+      <label for="workArrangement">Do you work Remote, Hybrid, or Onsite?</label>
+      <select id="workArrangement" required>
+        <option value="">Select an option</option>
+        <option value="Remote">Remote</option>
+        <option value="Hybrid">Hybrid</option>
+        <option value="Onsite">Onsite</option>
+      </select>
 
-    <br><br>
-    <button type="submit">Save Setup</button>
-  </form>
-  
-  <!-- Reference external JavaScript file -->
+      <br><br>
+      <button type="submit">Save Setup</button>
+    </form>
+  </div>
   <script src="setup.js"></script>
 </body>
 </html>

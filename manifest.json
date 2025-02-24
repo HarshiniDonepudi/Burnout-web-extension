@@ -1,13 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Burnout Tracker",
-<<<<<<< HEAD
   "version": "1.3",
   "description": "Tracks your browsing and calendar data to help detect burnout. Data is synced immediately to Google Sheets.",
-=======
-  "version": "1.1",
-  "description": "Tracks your browsing, work/leisure activity, and periodic well-being check-ins. Data is synced to Google Sheets.",
->>>>>>> parent of 60718da (Final)
   "permissions": [
     "storage",
     "tabs",
@@ -38,6 +33,5 @@
   },
   "action": {
     "default_popup": "popup.html"
-  
   }
 }
