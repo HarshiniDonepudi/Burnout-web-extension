@@ -147,7 +147,7 @@ document.addEventListener("DOMContentLoaded", function () {
           document.getElementById("question-container").classList.add("hidden");
           document.getElementById("quote-container").classList.remove("hidden");
           updateDailyCounter();
-          alert("Response submitted successfully!");
+          
         };
         optionsContainer.appendChild(btn);
       }
@@ -172,7 +172,7 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("question-container").classList.add("hidden");
         document.getElementById("quote-container").classList.remove("hidden");
         updateDailyCounter();
-        alert("Response submitted successfully!");
+       
       };
     }
   } else {
