@@ -94,7 +94,7 @@ function getSequentialQuestions(mode) {
     ];
   } else { // evening
     return [
-      { id: 'satisfaction', text: "How satisfied are you with today's work? (Scale 1-10)", type: "scale" },
+      { id: 'satisfaction', text: "How satisfied are you with today's work? (Scale 1-5)", type: "scale" },
       { id: 'leisure_minutes', text: "Did you have enough 'me' time today? (Scale 1-5)", type: "scale" },
       { id: 'overall_balance', text: "How would you rate your work-life balance today? (Scale 1-5)", type: "scale" },
       { id: 'evening_mood', text: "How are you feeling? (Scale 1-5)", type: "scale" }
