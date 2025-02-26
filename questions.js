@@ -311,7 +311,7 @@ document.addEventListener("DOMContentLoaded", function () {
       submitButton.style.display = "none";
       
       if (q.type === "scale") {
-        const maxVal = (mode === "evening") ? 10 : 5;
+        const maxVal = (mode === "evening") ? 5 : 5;
         for (let i = 1; i <= maxVal; i++) {
           const btn = document.createElement("button");
           btn.className = "likert-btn";
