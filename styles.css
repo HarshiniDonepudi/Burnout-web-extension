@@ -8,7 +8,7 @@
 body {
     font-family: "Nunito Sans", sans-serif;
     /* Vertical gradient */
-    background: linear-gradient(to bottom, #B5E9E9, #FCE5EF, #FFEBB2, #FFCABB);
+    background: linear-gradient(135deg, #B5E9E9, #FCE5EF, #FFEBB2, #FFCABB);
   
     /* Make the background taller than the element (200% height) */
     background-size: 100% 200%;
@@ -43,13 +43,18 @@ body {
 
 h2 {
     font-family: "Roca Bold", sans-serif;
+    margin-bottom: 40px;
 }
 
 #content {
-    background: white;
+    /* Transparent white background with some alpha */
+ 
+
+  /* Optional: add a slight border to emphasize the glass */
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     max-width: 500px;
     width: 90%;
 }
@@ -63,6 +68,25 @@ button {
     cursor: pointer;
     border-radius: 5px;
     margin-top: 10px;
+    align-items: center;
+}
+
+#submit-button {
+    background: #3FA5AD;
+    color: white;
+    font-family: "Roca Bold", sans-serif;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 50px;
+    margin-top: 10px;
+    align-items: center;
+    display: block;
+    margin: 40px auto;
+    width: 120px;
+    height: 50px;
+    font-size: 15px;
+   
 }
 
 button:hover {
@@ -86,3 +110,74 @@ button:hover {
 .hidden {
     display: none;
 }
+/* Counter Box */
+#counter-box {
+    position: fixed;          /* stays pinned to the viewport */
+    bottom: 20px;             /* adjust vertical distance from bottom */
+    left: 50%;                /* centers horizontally in the viewport */
+    transform: translateX(-50%); /* actually shifts it back left to be center */
+    background: transparent;  /* or a color if you want a background box */
+    font-size: 16px;          /* adjust to match your design */
+    color: #5C6C5C;           /* example color that might match your theme */
+    padding: 8px 0; /* ensures readability over background gradient */
+  }
+  
+  #daily-counter-text {
+    font-size: 16px;
+    color: #3FA5AD;
+  }
+  
+  /* Hide/Show */
+  .hidden {
+    display: none;
+  }
+  
+  /* Likert Buttons (for scale questions) */
+  .likert-btn {
+    background: white;
+    color: #3FA5AD;
+    border: 2px solid #3FA5AD;
+    padding: 5px 10px;
+    margin: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+  .likert-btn:hover,
+  .likert-btn.selected {
+    background: #3FA5AD;
+    color: white;
+  }
+  
+  /* Insights Button */
+  #insights-btn {
+    background: rgba(255, 255, 255, 0.572);
+    color: rgb(2, 2, 2);
+    font-family: "Roca Bold", sans-serif;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    width: 150px;
+    height: 50px;
+    font-size: 15px;
+    border-radius:50px;
+    margin-top: 10px;
+    align-items: center;
+  }
+  
+  /* Unlocked color after 7/7 days */
+  /* #insights-btn.unlocked {
+    
+    background: #3FA5AD; /* or any color you prefer for "unlocked" */
+
+  /* #insights-btn.unlocked:hover {
+    background: #2D5957;
+  }  */
+  #progress-text{
+    font-family: 'Roca Bold', sans-serif;
+    color:#3FA5AD
+  }
+  #subtext{
+    font-family: "Nunito Sans", sans-serif;
+    font-size: 14px;
+   
+  }

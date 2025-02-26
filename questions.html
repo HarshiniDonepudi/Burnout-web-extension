@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Juggl Insights</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito+Sans&display=swap">
-
 </head>
 <body>
   <div id="content">
@@ -16,12 +15,28 @@
       <button id="submit-button">Submit</button>
     </div>
     <div id="quote-container" class="hidden">
-      <h2 id="quote-text"></h2>
-    </div>
-    <div id="counter-box" style="margin-top: 20px; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
-      <span id="daily-counter-text">0/7 days completed</span>
+      <h2 id="quote-text">"An unexamined life is not worth living." - Socrates</h2>
     </div>
   </div>
+
+  <!-- Counter Box placed outside #content, at the bottom of the body -->
+  <div id="counter-box">
+    <!-- “Insights” button with a lock icon -->
+    <button id="insights-btn" >
+      Insights
+      <span class="lock-icon" aria-hidden="true">🔒</span>
+    </button>
+  
+    <!-- Progress text -->
+    <p class="progress-text" style=" font-family: 'Roca Bold', sans-serif;color: #3FA5AD;">Progress: <span id="daily-counter-text">0/7</span></p>
+  
+    <!-- Optional tagline -->
+    <p class="subtext" >
+      Every response fine-tunes your insights. Keep going to uncover 
+      your unique work and well-being patterns.
+    </p>
+  </div>
+
   <script src="questions.js"></script>
 </body>
 </html>

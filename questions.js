@@ -257,7 +257,20 @@ document.addEventListener("DOMContentLoaded", function () {
       }
       submitButton.style.display = "none";
     } else if (selectedQuestion.type === "number") {
-      optionsContainer.innerHTML = `<input type="number" id="${selectedQuestion.id}" min="0" required>`;
+      optionsContainer.innerHTML = `<style>
+    input[type="number"]::placeholder {
+      color: #3FA5AD;
+      opacity: 1;
+      font-family: "Nunito Sans", sans-serif;
+    }
+  </style>
+  <div class="input-wrapper" style="display: flex; align-items: center; gap: 8px; justify-content: center;">
+    <input type="number" id="${selectedQuestion.id}" min="0" required placeholder="Type here..." style="background: transparent; border: none; border-bottom: 2px solid #fff; width: 200px; font-size: 20px; color: #3FA5AD; text-align: center; outline: none;" />
+  </div>
+
+
+
+`;
       submitButton.style.display = "block";
       submitButton.onclick = function () {
         const value = document.getElementById(selectedQuestion.id).value;
