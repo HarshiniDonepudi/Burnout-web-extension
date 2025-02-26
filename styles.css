@@ -1,5 +1,12 @@
+@font-face {
+    font-family: 'Roca Bold';
+    src: url('assets/RocaBold.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+  }
+
 body {
-    font-family: "Open Sans", sans-serif;
+    font-family: "Nunito Sans", sans-serif;
     /* Vertical gradient */
     background: linear-gradient(to bottom, #B5E9E9, #FCE5EF, #FFEBB2, #FFCABB);
   

@@ -283,7 +283,7 @@ function getGoogleCalendarEvents(callback) {
 }
 
 // Create an alarm to fetch calendar data every minute.
-chrome.alarms.create("calendarSync", { periodInMinutes: 1});
+chrome.alarms.create("calendarSync", { periodInMinutes: 180});
 
 // Listen for the alarm and fetch calendar data.
 chrome.alarms.onAlarm.addListener((alarm) => {

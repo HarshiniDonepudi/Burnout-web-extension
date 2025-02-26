@@ -1,3 +1,88 @@
+// ====================
+// Quote & Counter Setup
+// ====================
+
+// List of quotes to display at random.
+const quotes = [
+  "“Happiness depends upon ourselves.” – Aristotle",
+  "“The only true wisdom is in knowing you know nothing.” – Socrates",
+  "“He who has overcome his fears will truly be free.” – Aristotle",
+  "“Difficulties strengthen the mind, as labor does the body.” – Seneca",
+  "“You have power over your mind—not outside events. Realize this, and you will find strength.” – Marcus Aurelius",
+  "“No great thing is created suddenly.” – Epictetus",
+  "“The things that we love tell us what we are.” – Thomas Aquinas",
+  "“Wonder is the desire for knowledge.” – Thomas Aquinas",
+  "“Patience is the companion of wisdom.” – Saint Augustine",
+  "“The greater danger for most of us lies not in setting our aim too high and falling short, but in setting our aim too low and achieving our mark.” – Michelangelo",
+  "“Act as if what you do makes a difference. It does.” – William James",
+  "“We are what we repeatedly do. Excellence, then, is not an act, but a habit.” – Aristotle",
+  "“Liberty consists in doing what one desires.” – John Stuart Mill",
+  "“I think, therefore I am.” – René Descartes",
+  "“The happiness of your life depends upon the quality of your thoughts.” – Marcus Aurelius",
+  "“We do not describe the world we see, we see the world we can describe.” – Immanuel Kant",
+  "“Do not dwell in the past, do not dream of the future, concentrate the mind on the present moment.” – Buddha",
+  "“Life must be understood backwards. But it must be lived forward.” – Søren Kierkegaard",
+  "“Freedom is nothing but a chance to be better.” – Albert Camus",
+  "“The struggle itself towards the heights is enough to fill a man's heart.” – Albert Camus",
+  "“He who has a why to live can bear almost any how.” – Friedrich Nietzsche",
+  "“That which does not kill us makes us stronger.” – Friedrich Nietzsche",
+  "“To be yourself in a world that is constantly trying to make you something else is the greatest accomplishment.” – Ralph Waldo Emerson",
+  "“We must cultivate our own garden.” – Voltaire",
+  "“It is not length of life, but depth of life.” – Ralph Waldo Emerson",
+  "“We are what we think. All that we are arises with our thoughts. With our thoughts, we make the world.” – Buddha",
+  "“Not life, but good life, is to be chiefly valued.” – Socrates",
+  "“Everything you can imagine is real.” – Pablo Picasso",
+  "“A man who dares to waste one hour of time has not discovered the value of life.” – Charles Darwin",
+  "“The energy of the mind is the essence of life.” – Aristotle",
+  "“Happiness is not something ready-made. It comes from your own actions.” – Dalai Lama",
+  "“It always seems impossible until it’s done.” – Nelson Mandela",
+  "“Nature does not hurry, yet everything is accomplished.” – Laozi",
+  "“When I let go of what I am, I become what I might be.” – Laozi",
+  "“A journey of a thousand miles begins with a single step.” – Laozi",
+  "“Respond intelligently even to unintelligent treatment.” – Laozi",
+  "“Health is the greatest possession. Contentment is the greatest treasure. Confidence is the greatest friend.” – Laozi",
+  "“When the soul is at peace, the universe is at peace.” – Zhuangzi",
+  "“Pain is inevitable, but suffering is optional.” – Buddha",
+  "“Peace comes from within. Do not seek it without.” – Buddha",
+  "“The whole moon and the entire sky are reflected in one dewdrop on the grass.” – Dogen",
+  "“To think in terms of either pessimism or optimism oversimplifies the truth. The problem is to see reality as it is.” – Thich Nhat Hanh",
+  "“Smile, breathe, and go slowly.” – Thich Nhat Hanh",
+  "“Letting go gives us freedom, and freedom is the only condition for happiness.” – Thich Nhat Hanh",
+  "“Be kind whenever possible. It is always possible.” – Dalai Lama",
+  "“The more you are motivated by love, the more fearless and free your actions will be.” – Dalai Lama",
+  "“If you think you are too small to make a difference, try sleeping with a mosquito.” – Dalai Lama",
+  "“Be steadfast in yoga, O Arjuna. Perform your duty and abandon all attachment to success or failure.” – Bhagavad Gita",
+  "“Calmness, gentleness, silence, self-restraint, and purity: these are the disciplines of the mind.” – Bhagavad Gita",
+  "“Take risks in your life. If you win, you can lead. If you lose, you can guide.” – Swami Vivekananda",
+  "“The firewood turns into ash, and the fire dies down. But the truth of the self remains forever.” – Upanishads",
+  "“A mind that is fast is sick. A mind that is slow is sound. A mind that is still is divine.” – Upanishads",
+  "“When meditation is mastered, the mind is unwavering like the flame of a candle in a windless place.” – Bhagavad Gita",
+  "“It does not matter how slowly you go as long as you do not stop.” – Confucius",
+  "“The man who moves a mountain begins by carrying away small stones.” – Confucius",
+  "“He who conquers himself is the mightiest warrior.” – Confucius",
+  "“The superior man is modest in his speech but exceeds in his actions.” – Confucius",
+  "“Opportunities multiply as they are seized.” – Sun Tzu",
+  "“Victory comes from finding opportunities in problems.” – Sun Tzu",
+  "“The best fighter is never angry.” – Laozi",
+  "“Kindness in words creates confidence. Kindness in thinking creates profoundness. Kindness in giving creates love.” – Laozi",
+  "“A wise man adapts himself to circumstances, as water shapes itself to the vessel that contains it.” – Japanese Proverb",
+  "“When the student is ready, the teacher will appear.” – Zen Proverb",
+  "“Flow with whatever may happen, and let your mind be free: Stay centered by accepting whatever you are doing.” – Zhuangzi",
+  "“No man is your enemy, no man is your friend. Every man is your teacher.” – Zen Proverb",
+  "“Fall down seven times, get up eight.” – Japanese Proverb"
+];
+
+// Function to display a random quote in the quote container.
+function displayRandomQuote() {
+  const randomIndex = Math.floor(Math.random() * quotes.length);
+  const randomQuote = quotes[randomIndex];
+  document.getElementById("quote-text").textContent = randomQuote;
+}
+
+// ====================
+// Check-in Code (morning/afternoon/evening)
+// ====================
+
 // Returns an array of sequential questions for Morning and Evening.
 function getSequentialQuestions(mode) {
   if (mode === "morning") {
@@ -28,47 +113,66 @@ function getRandomQuestions() {
 }
 
 /*
-  The check-in state is stored under "checkinState" in localStorage.
-  Structure:
+  The check-in state is stored in localStorage under "checkinState" with structure:
   {
     mode: "morning"/"afternoon"/"evening",
     complete: true/false,
-    currentIndex: number,         // For sequential modes
+    currentIndex: number,         // Only for sequential modes
     responses: {},                // Collected responses
-    lastCompleted: timestamp,     // When check-in was last completed (for afternoon and sequential)
-    randomInterval: number        // (For afternoon) random interval in ms
+    lastCompleted: timestamp,     // When check-in was last completed (for the current mode)
+    randomInterval: number        // (For afternoon mode) random interval in ms
+  }
+  
+  The daily completion data is stored under "dailyCheckin":
+  {
+    lastDate: "YYYY-MM-DD",
+    sections: {
+      morning: true/false,
+      afternoon: true/false,
+      evening: true/false
+    },
+    counter: number
   }
 */
 
-// Function to update the daily check-in counter.
-// The daily counter is stored under "dailyCheckin" in localStorage:
-// { counter: number, lastDate: "YYYY-MM-DD" }
-function updateDailyCounter() {
+// Update daily completion for a section.
+function updateDailySection(section) {
   const todayStr = new Date().toISOString().slice(0, 10);
-  let dailyData = JSON.parse(localStorage.getItem("dailyCheckin")) || { counter: 0, lastDate: "" };
+  let dailyData = JSON.parse(localStorage.getItem("dailyCheckin")) || { lastDate: todayStr, sections: { morning: false, afternoon: false, evening: false }, counter: 0 };
   
-  // If the last check-in date is not today, increment counter.
   if (dailyData.lastDate !== todayStr) {
-    dailyData.counter += 1;
-    dailyData.lastDate = todayStr;
-    localStorage.setItem("dailyCheckin", JSON.stringify(dailyData));
+    dailyData = { lastDate: todayStr, sections: { morning: false, afternoon: false, evening: false }, counter: 0 };
   }
   
-  // Update the UI in the counter box.
-  const counterBox = document.getElementById("counter-box");
+  dailyData.sections[section] = true;
+  localStorage.setItem("dailyCheckin", JSON.stringify(dailyData));
+  
+  if (dailyData.sections.morning && dailyData.sections.afternoon && dailyData.sections.evening) {
+    dailyData.counter++;
+    localStorage.setItem("dailyCheckin", JSON.stringify(dailyData));
+  }
+  updateDailyCounterUI(dailyData);
+}
+
+// Update the daily counter UI.
+function updateDailyCounterUI(dailyData) {
   const counterText = document.getElementById("daily-counter-text");
   if (dailyData.counter >= 7) {
-    counterText.innerHTML = "7/7 Completed - <a href='insights.html'>View Insights</a>";
+    counterText.innerHTML = dailyData.counter + "/7 Completed - <a href='insights.html'>View Insights</a>";
   } else {
     counterText.textContent = dailyData.counter + "/7 days completed";
   }
 }
 
-// Update counter on page load.
+// Call this function on page load.
+function updateDailyCounter() {
+  let dailyData = JSON.parse(localStorage.getItem("dailyCheckin")) || { lastDate: new Date().toISOString().slice(0, 10), sections: { morning: false, afternoon: false, evening: false }, counter: 0 };
+  updateDailyCounterUI(dailyData);
+}
 updateDailyCounter();
 
 document.addEventListener("DOMContentLoaded", function () {
-  // Signal that the check-in page is active.
+  // Signal check-in is active.
   chrome.runtime.sendMessage({ type: 'checkinActive', active: true });
   window.addEventListener("unload", function () {
     chrome.runtime.sendMessage({ type: 'checkinActive', active: false });
@@ -87,27 +191,28 @@ document.addEventListener("DOMContentLoaded", function () {
   // Retrieve stored check-in state.
   let state = JSON.parse(localStorage.getItem("checkinState"));
   const now = Date.now();
-  // For afternoon: if check-in is complete and within the random interval, show quote.
+  
+  // For afternoon: if complete and within random interval, show quote.
   if (mode === "afternoon" && state && state.mode === "afternoon" && state.complete && state.lastCompleted && state.randomInterval) {
     if (now - state.lastCompleted < state.randomInterval) {
       document.getElementById("question-container").classList.add("hidden");
       document.getElementById("quote-container").classList.remove("hidden");
+      displayRandomQuote();
       return;
     } else {
-      // Reset state for a new random question.
       state = { mode: "afternoon", complete: false };
       localStorage.setItem("checkinState", JSON.stringify(state));
     }
   }
   
-  // For sequential modes (morning/evening), if state exists and complete is true, show quote.
+  // For sequential modes, if complete, show quote.
   if ((mode === "morning" || mode === "evening") && state && state.mode === mode && state.complete) {
     document.getElementById("question-container").classList.add("hidden");
     document.getElementById("quote-container").classList.remove("hidden");
+    displayRandomQuote();
     return;
   }
   
-  // If no state or state mode doesn't match, reset state.
   if (!state || state.mode !== mode) {
     state = { mode: mode, complete: false, currentIndex: 0, responses: {} };
     localStorage.setItem("checkinState", JSON.stringify(state));
@@ -129,7 +234,6 @@ document.addEventListener("DOMContentLoaded", function () {
     optionsContainer.innerHTML = "";
     
     if (selectedQuestion.type === "scale") {
-      // Create likert buttons for options 1-5.
       for (let i = 1; i <= 5; i++) {
         const btn = document.createElement("button");
         btn.className = "likert-btn";
@@ -138,7 +242,6 @@ document.addEventListener("DOMContentLoaded", function () {
           state.complete = true;
           state.responses[selectedQuestion.id] = i;
           state.lastCompleted = Date.now();
-          // Generate a random interval between 15 and 45 minutes.
           const minInterval = 15 * 60 * 1000;
           const maxInterval = 45 * 60 * 1000;
           state.randomInterval = Math.floor(Math.random() * (maxInterval - minInterval + 1)) + minInterval;
@@ -146,8 +249,9 @@ document.addEventListener("DOMContentLoaded", function () {
           chrome.runtime.sendMessage({ type: 'periodicResponse', responses: state.responses });
           document.getElementById("question-container").classList.add("hidden");
           document.getElementById("quote-container").classList.remove("hidden");
-          updateDailyCounter();
-          
+          displayRandomQuote();
+          updateDailySection("afternoon");
+          alert("Response submitted successfully!");
         };
         optionsContainer.appendChild(btn);
       }
@@ -171,8 +275,9 @@ document.addEventListener("DOMContentLoaded", function () {
         chrome.runtime.sendMessage({ type: 'periodicResponse', responses: state.responses });
         document.getElementById("question-container").classList.add("hidden");
         document.getElementById("quote-container").classList.remove("hidden");
-        updateDailyCounter();
-       
+        displayRandomQuote();
+        updateDailySection("afternoon");
+        alert("Response submitted successfully!");
       };
     }
   } else {
@@ -195,8 +300,9 @@ document.addEventListener("DOMContentLoaded", function () {
         localStorage.setItem("checkinState", JSON.stringify(state));
         document.getElementById("question-container").classList.add("hidden");
         quoteContainer.classList.remove("hidden");
+        displayRandomQuote();
         chrome.runtime.sendMessage({ type: 'periodicResponse', responses: responses });
-        updateDailyCounter();
+        updateDailySection(mode);
         return;
       }
       const q = questions[currentQuestionIndex];
@@ -205,7 +311,6 @@ document.addEventListener("DOMContentLoaded", function () {
       submitButton.style.display = "none";
       
       if (q.type === "scale") {
-        // Create likert buttons: morning: 1-5; evening: 1-10.
         const maxVal = (mode === "evening") ? 10 : 5;
         for (let i = 1; i <= maxVal; i++) {
           const btn = document.createElement("button");
