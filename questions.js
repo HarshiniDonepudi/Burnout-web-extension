@@ -1,8 +1,10 @@
-// ====================
-// Quote & Counter Setup
-// ====================
+/************************************************
+ * questions.js
+ ***********************************************/
 
-// List of quotes to display at random.
+// =====================
+// 1) Quotes
+// =====================
 const quotes = [
   "“Happiness depends upon ourselves.” – Aristotle",
   "“The only true wisdom is in knowing you know nothing.” – Socrates",
@@ -71,303 +73,281 @@ const quotes = [
   "“No man is your enemy, no man is your friend. Every man is your teacher.” – Zen Proverb",
   "“Fall down seven times, get up eight.” – Japanese Proverb"
 ];
-
-// Function to display a random quote in the quote container.
 function displayRandomQuote() {
   const randomIndex = Math.floor(Math.random() * quotes.length);
-  const randomQuote = quotes[randomIndex];
-  document.getElementById("quote-text").textContent = randomQuote;
+  document.getElementById("quote-text").textContent = quotes[randomIndex];
 }
+// =====================
+// 2) Question Sets
+// =====================
 
-// ====================
-// Check-in Code (morning/afternoon/evening)
-// ====================
-
-// Returns an array of sequential questions for Morning and Evening.
-function getSequentialQuestions(mode) {
-  if (mode === "morning") {
-    return [
-      { id: 'sleep_quality', text: "How well did you sleep last night? (Scale 1-5)", type: "scale" },
-      { id: 'hours_sleep', text: "How many hours of sleep did you get?", type: "number" },
-      { id: 'morning_energy', text: "What's your energy level this morning? (Scale 1-5)", type: "scale" },
-      { id: 'morning_mood', text: "How are you feeling? (Scale 1-5)", type: "scale" }
-    ];
-  } else { // evening
-    return [
-      { id: 'satisfaction', text: "How satisfied are you with today's work? (Scale 1-5)", type: "scale" },
-      { id: 'leisure_minutes', text: "Did you have enough 'me' time today? (Scale 1-5)", type: "scale" },
-      { id: 'overall_balance', text: "How would you rate your work-life balance today? (Scale 1-5)", type: "scale" },
-      { id: 'evening_mood', text: "How are you feeling? (Scale 1-5)", type: "scale" }
-    ];
-  }
-}
-
-// Returns an array of random questions for Afternoon.
-function getRandomQuestions() {
+// Morning: 4 sequential
+function getMorningQuestions() {
   return [
-    { id: 'afternoon_mood', text: "How are you feeling? (Scale 1-5)", type: "scale" },
-    { id: 'breaks_taken', text: "How many breaks have you taken today? (Number)", type: "number" },
-    { id: 'last_break_duration', text: "How long was your last break (in minutes)? (Number)", type: "number" },
-    { id: 'productivity', text: "How productive do you feel today? (Scale 1-5)", type: "scale" }
+    { id: 'sleep_quality',   text: "How well did you sleep last night? (1-5)", type: "scale" },
+    { id: 'hours_sleep',     text: "How many hours did you sleep?",            type: "number" },
+    { id: 'morning_energy',  text: "Morning energy level (1-5)?",              type: "scale" },
+    { id: 'morning_mood',    text: "Your mood this morning (1-5)?",            type: "scale" }
+  ];
+}
+
+// Afternoon random question pool
+function getAfternoonPool() {
+  return [
+    { id: 'afternoon_mood',    text: "How are you feeling this afternoon? (1-5)", type: "scale" },
+    { id: 'breaks_taken',      text: "How many breaks have you taken?",           type: "number" },
+    { id: 'last_break_minutes',text: "How long was your last break (mins)?",      type: "number" },
+    { id: 'productivity',      text: "How productive do you feel? (1-5)",         type: "scale" },
+    { id: 'stress_level',      text: "Current stress level (1-5)?",               type: "scale" }
+  ];
+}
+
+// Evening: 4 sequential
+function getEveningQuestions() {
+  return [
+    { id: 'satisfaction',    text: "How satisfied are you with today's work? (1-5)", type: "scale" },
+    { id: 'leisure_minutes', text: "Did you have enough 'me' time? (1-5)",           type: "scale" },
+    { id: 'overall_balance', text: "Work-life balance rating today? (1-5)",          type: "scale" },
+    { id: 'evening_mood',    text: "Your mood this evening (1-5)?",                  type: "scale" }
   ];
 }
 
 /*
-  The check-in state is stored in localStorage under "checkinState" with structure:
-  {
-    mode: "morning"/"afternoon"/"evening",
-    complete: true/false,
-    currentIndex: number,         // Only for sequential modes
-    responses: {},                // Collected responses
-    lastCompleted: timestamp,     // When check-in was last completed (for the current mode)
-    randomInterval: number        // (For afternoon mode) random interval in ms
-  }
-  
-  The daily completion data is stored under "dailyCheckin":
+  We have 9 total daily questions:
+    4 morning + 1 random (afternoon) + 4 evening
+  Each answered question increments the daily bar by ~11.1% if there's exactly 9 total for the day.
+
+  localStorage => "dailyCheckin":
   {
     lastDate: "YYYY-MM-DD",
-    sections: {
-      morning: true/false,
-      afternoon: true/false,
-      evening: true/false
-    },
-    counter: number
+    dayIndex: 0,                 // how many full days completed out of 7
+    questionsAnsweredToday: 0,   // 0..9
+    todayCompleted: false
+  }
+
+  We store "checkinState" for the current section:
+  {
+    mode: "morning"/"afternoon"/"evening",
+    complete: bool,
+    currentIndex: number,
+    responses: {},
+    randomInterval: number,  // for afternoon
+    lastCompleted: timestamp // for afternoon
   }
 */
 
-// Update daily completion for a section.
-function updateDailySection(section) {
+// =====================
+// 3) Daily Data & Progress Logic
+// =====================
+function loadDailyData() {
+  let data = JSON.parse(localStorage.getItem("dailyCheckin"));
+  if (!data) {
+    data = {
+      lastDate: new Date().toISOString().slice(0, 10),
+      dayIndex: 0,
+      questionsAnsweredToday: 0,
+      todayCompleted: false
+    };
+  }
   const todayStr = new Date().toISOString().slice(0, 10);
-  let dailyData = JSON.parse(localStorage.getItem("dailyCheckin")) || { lastDate: todayStr, sections: { morning: false, afternoon: false, evening: false }, counter: 0 };
-  
-  if (dailyData.lastDate !== todayStr) {
-    dailyData = { lastDate: todayStr, sections: { morning: false, afternoon: false, evening: false }, counter: 0 };
+  if (data.lastDate !== todayStr) {
+    data.lastDate = todayStr;
+    data.questionsAnsweredToday = 0;
+    data.todayCompleted = false;
   }
-  
-  dailyData.sections[section] = true;
-  localStorage.setItem("dailyCheckin", JSON.stringify(dailyData));
-  
-  if (dailyData.sections.morning && dailyData.sections.afternoon && dailyData.sections.evening) {
-    dailyData.counter++;
-    localStorage.setItem("dailyCheckin", JSON.stringify(dailyData));
-  }
-  updateDailyCounterUI(dailyData);
+  localStorage.setItem("dailyCheckin", JSON.stringify(data));
+  return data;
 }
 
-// Update the daily counter UI.
-function updateDailyCounterUI(dailyData) {
-  const counterText = document.getElementById("daily-counter-text");
-  if (dailyData.counter >= 7) {
-    counterText.innerHTML = dailyData.counter + "/7 Completed - <a href='insights.html'>View Insights</a>";
+function updateProgressUI() {
+  let dailyData = loadDailyData();
+  if (dailyData.todayCompleted) {
+    document.getElementById("progress-bar").style.width = "100%";
   } else {
-    counterText.textContent = dailyData.counter + "/7 days completed";
+    // e.g. if 9 total daily questions
+    const fraction = dailyData.questionsAnsweredToday / 9;
+    const percent = fraction * 100;
+    document.getElementById("progress-bar").style.width = `${Math.min(percent, 100)}%`;
   }
+  document.getElementById("daily-counter-text").textContent =
+    `${dailyData.dayIndex}/7 Days Complete`;
 }
 
-// Call this function on page load.
-function updateDailyCounter() {
-  let dailyData = JSON.parse(localStorage.getItem("dailyCheckin")) || { lastDate: new Date().toISOString().slice(0, 10), sections: { morning: false, afternoon: false, evening: false }, counter: 0 };
-  updateDailyCounterUI(dailyData);
+function incrementQuestionsAnswered() {
+  let data = loadDailyData();
+  if (!data.todayCompleted) {
+    data.questionsAnsweredToday++;
+    if (data.questionsAnsweredToday >= 9 && !data.todayCompleted) {
+      // day is fully done
+      data.todayCompleted = true;
+      data.dayIndex = Math.min(data.dayIndex + 1, 7);
+    }
+    localStorage.setItem("dailyCheckin", JSON.stringify(data));
+  }
+  updateProgressUI();
 }
-updateDailyCounter();
 
-document.addEventListener("DOMContentLoaded", function () {
-  // Signal check-in is active.
-  chrome.runtime.sendMessage({ type: 'checkinActive', active: true });
-  window.addEventListener("unload", function () {
-    chrome.runtime.sendMessage({ type: 'checkinActive', active: false });
-  });
-  
-  const currentHour = new Date().getHours();
+// =====================
+// 4) Main Check-In Logic
+// =====================
+document.addEventListener("DOMContentLoaded", function() {
+  updateProgressUI();
+
+  // Decide time-based mode
+  const hour = new Date().getHours();
   let mode;
-  if (currentHour >= 5 && currentHour < 12) {
-    mode = "morning";
-  } else if (currentHour >= 12 && currentHour < 17) {
-    mode = "afternoon";
+  if (hour >= 5 && hour < 12) {
+    mode = "morning";    // for demonstration
+  } else if (hour >= 16 && hour < 18) {
+    mode = "afternoon";  // random question
   } else {
-    mode = "evening";
+    mode = "evening";    // for demonstration
   }
-  
-  // Retrieve stored check-in state.
+
   let state = JSON.parse(localStorage.getItem("checkinState"));
   const now = Date.now();
-  
-  // For afternoon: if complete and within random interval, show quote.
-  if (mode === "afternoon" && state && state.mode === "afternoon" && state.complete && state.lastCompleted && state.randomInterval) {
-    if (now - state.lastCompleted < state.randomInterval) {
-      document.getElementById("question-container").classList.add("hidden");
-      document.getElementById("quote-container").classList.remove("hidden");
-      displayRandomQuote();
-      return;
-    } else {
-      state = { mode: "afternoon", complete: false };
-      localStorage.setItem("checkinState", JSON.stringify(state));
-    }
+
+  // If no existing state or different mode, create fresh
+  if (!state || state.mode !== mode) {
+    state = {
+      mode,
+      complete: false,
+      currentIndex: 0,
+      responses: {},
+      randomInterval: 0,
+      lastCompleted: 0
+    };
+    localStorage.setItem("checkinState", JSON.stringify(state));
   }
-  
-  // For sequential modes, if complete, show quote.
-  if ((mode === "morning" || mode === "evening") && state && state.mode === mode && state.complete) {
-    document.getElementById("question-container").classList.add("hidden");
-    document.getElementById("quote-container").classList.remove("hidden");
+
+  const questionContainer = document.getElementById("question-container");
+  const quoteContainer = document.getElementById("quote-container");
+  const questionTextElem = document.getElementById("question-text");
+  const optionsContainer = document.getElementById("options-container");
+  const submitButton = document.getElementById("submit-button");
+
+  // If user already completed this mode => show quote
+  if (state.complete) {
+    questionContainer.classList.add("hidden");
+    quoteContainer.classList.remove("hidden");
     displayRandomQuote();
     return;
   }
-  
-  if (!state || state.mode !== mode) {
-    state = { mode: mode, complete: false, currentIndex: 0, responses: {} };
-    localStorage.setItem("checkinState", JSON.stringify(state));
-  }
-  
+
   if (mode === "afternoon") {
-    // RANDOM MODE for afternoon.
-    const questions = getRandomQuestions();
-    const randomIndex = Math.floor(Math.random() * questions.length);
-    const selectedQuestion = questions[randomIndex];
-    
-    const questionTextElem = document.getElementById("question-text");
-    const optionsContainer = document.getElementById("options-container");
-    const submitButton = document.getElementById("submit-button");
-    const quoteContainer = document.getElementById("quote-container");
+    // Check cooldown
+    if (state.complete && state.lastCompleted && state.randomInterval) {
+      if (now - state.lastCompleted < state.randomInterval) {
+        // still in cooldown => show quote only
+        questionContainer.classList.add("hidden");
+        quoteContainer.classList.remove("hidden");
+        displayRandomQuote();
+        return;
+      } else {
+        // cooldown ended => allow new question
+        state = {
+          mode: "afternoon",
+          complete: false,
+          currentIndex: 0,
+          responses: {}
+        };
+        localStorage.setItem("checkinState", JSON.stringify(state));
+      }
+    }
+
+    // Now show a random question
     quoteContainer.classList.add("hidden");
-    
-    questionTextElem.textContent = selectedQuestion.text;
+    const pool = getAfternoonPool();
+    const randIndex = Math.floor(Math.random() * pool.length);
+    const question = pool[randIndex];
+
+    questionTextElem.textContent = question.text;
     optionsContainer.innerHTML = "";
-    
-    if (selectedQuestion.type === "scale") {
+    submitButton.style.display = "none";
+
+    // If scale
+    if (question.type === "scale") {
       for (let i = 1; i <= 5; i++) {
         const btn = document.createElement("button");
         btn.className = "likert-btn";
         btn.textContent = i;
-        btn.onclick = function () {
+        btn.onclick = function() {
+          // store response
           state.complete = true;
-          state.responses[selectedQuestion.id] = i;
+          state.responses[question.id] = i;
           state.lastCompleted = Date.now();
-          const minInterval = 15 * 60 * 1000;
-          const maxInterval = 45 * 60 * 1000;
-          state.randomInterval = Math.floor(Math.random() * (maxInterval - minInterval + 1)) + minInterval;
+          // random interval 15–45 min
+          const minMS = 1 * 60 * 1000;
+          const maxMS = 3 * 60 * 1000;
+          state.randomInterval = Math.floor(Math.random() * (maxMS - minMS + 1)) + minMS;
           localStorage.setItem("checkinState", JSON.stringify(state));
-          chrome.runtime.sendMessage({ type: 'periodicResponse', responses: state.responses });
-          document.getElementById("question-container").classList.add("hidden");
-          document.getElementById("quote-container").classList.remove("hidden");
+
+          // increment bar
+          incrementQuestionsAnswered();
+
+          // send to background
+          chrome.runtime.sendMessage({
+            type: "periodicResponse",
+            responses: state.responses
+          });
+
+          questionContainer.classList.add("hidden");
+          quoteContainer.classList.remove("hidden");
           displayRandomQuote();
-          updateDailySection("afternoon");
-          alert("Response submitted successfully!");
         };
         optionsContainer.appendChild(btn);
       }
-      submitButton.style.display = "none";
-    } else if (selectedQuestion.type === "number") {
-      optionsContainer.innerHTML = `<style>
-    input[type="number"]::placeholder {
-      color: #3FA5AD;
-      opacity: 1;
-      font-family: "Nunito Sans", sans-serif;
     }
-  </style>
-  <div class="input-wrapper" style="display: flex; align-items: center; gap: 8px; justify-content: center;">
-    <input type="number" id="${selectedQuestion.id}" min="0" required placeholder="Type here..." style="background: transparent; border: none; border-bottom: 2px solid #fff; width: 200px; font-size: 20px; color: #3FA5AD; text-align: center; outline: none;" />
-  </div>
+    // If number
+    else if (question.type === "number") {
+      const inputElem = document.createElement("input");
+      inputElem.type = "number";
+      inputElem.placeholder = "Type here...";
+      // styling
+      inputElem.style.border = "none";
+      inputElem.style.borderBottom = "2px solid #fff";
+      inputElem.style.width = "200px";
+      inputElem.style.fontSize = "20px";
+      inputElem.style.color = "#3FA5AD";
+      inputElem.style.textAlign = "center";
+      inputElem.style.outline = "none";
 
+      optionsContainer.appendChild(inputElem);
 
+      inputElem.addEventListener("input", function() {
+        submitButton.style.display = inputElem.value ? "block" : "none";
+      });
 
-`;
-      submitButton.style.display = "block";
-      submitButton.onclick = function () {
-        const value = document.getElementById(selectedQuestion.id).value;
-        if (!value) {
+      submitButton.onclick = function() {
+        if (!inputElem.value) {
           alert("Please enter a value.");
           return;
         }
         state.complete = true;
-        state.responses[selectedQuestion.id] = value;
+        state.responses[question.id] = inputElem.value;
         state.lastCompleted = Date.now();
-        const minInterval = 15 * 60 * 1000;
-        const maxInterval = 45 * 60 * 1000;
-        state.randomInterval = Math.floor(Math.random() * (maxInterval - minInterval + 1)) + minInterval;
+        const minMS = 1 * 60 * 1000;
+        const maxMS = 3 * 60 * 1000;
+        state.randomInterval = Math.floor(Math.random() * (maxMS - minMS + 1)) + minMS;
         localStorage.setItem("checkinState", JSON.stringify(state));
-        chrome.runtime.sendMessage({ type: 'periodicResponse', responses: state.responses });
-        document.getElementById("question-container").classList.add("hidden");
-        document.getElementById("quote-container").classList.remove("hidden");
-        displayRandomQuote();
-        updateDailySection("afternoon");
-        alert("Response submitted successfully!");
-      };
-    }
-  } else {
-    // SEQUENTIAL MODE for morning and evening.
-    const questions = getSequentialQuestions(mode);
-    let currentQuestionIndex = state.currentIndex;
-    let responses = state.responses;
-    
-    const questionTextElem = document.getElementById("question-text");
-    const optionsContainer = document.getElementById("options-container");
-    const submitButton = document.getElementById("submit-button");
-    const quoteContainer = document.getElementById("quote-container");
-    
-    quoteContainer.classList.add("hidden");
-    
-    function loadQuestion() {
-      if (currentQuestionIndex >= questions.length) {
-        state.complete = true;
-        state.lastCompleted = Date.now();
-        localStorage.setItem("checkinState", JSON.stringify(state));
-        document.getElementById("question-container").classList.add("hidden");
+
+        incrementQuestionsAnswered();
+
+        chrome.runtime.sendMessage({
+          type: "periodicResponse",
+          responses: state.responses
+        });
+
+        questionContainer.classList.add("hidden");
         quoteContainer.classList.remove("hidden");
         displayRandomQuote();
-        chrome.runtime.sendMessage({ type: 'periodicResponse', responses: responses });
-        updateDailySection(mode);
-        return;
-      }
-      const q = questions[currentQuestionIndex];
-      questionTextElem.textContent = q.text;
-      optionsContainer.innerHTML = "";
-      submitButton.style.display = "none";
-      
-      if (q.type === "scale") {
-        const maxVal = (mode === "evening") ? 5 : 5;
-        for (let i = 1; i <= maxVal; i++) {
-          const btn = document.createElement("button");
-          btn.className = "likert-btn";
-          btn.textContent = i;
-          btn.onclick = function () {
-            responses[q.id] = i;
-            currentQuestionIndex++;
-            state.currentIndex = currentQuestionIndex;
-            state.responses = responses;
-            localStorage.setItem("checkinState", JSON.stringify(state));
-            loadQuestion();
-          };
-          optionsContainer.appendChild(btn);
-        }
-      } else if (q.type === "number") {
-        const inputElem = document.createElement("input");
-        inputElem.type = "number";
-        inputElem.id = q.id;
-        inputElem.name = q.id;
-        inputElem.required = true;
-        inputElem.min = 0;
-        optionsContainer.appendChild(inputElem);
-        inputElem.addEventListener("input", function () {
-          submitButton.style.display = inputElem.value ? "block" : "none";
-        });
-      }
+      };
     }
-    
-    submitButton.addEventListener("click", function () {
-      const q = questions[currentQuestionIndex];
-      const value = document.getElementById(q.id).value;
-      if (!value) {
-        alert("Please answer the question before proceeding.");
-        return;
-      }
-      responses[q.id] = value;
-      currentQuestionIndex++;
-      state.currentIndex = currentQuestionIndex;
-      state.responses = responses;
-      localStorage.setItem("checkinState", JSON.stringify(state));
-      loadQuestion();
-    });
-    
-    loadQuestion();
+  }
+  else {
+    // morning/evening blocks, or anything else => just show quote for demonstration
+    questionContainer.classList.add("hidden");
+    quoteContainer.classList.remove("hidden");
+    displayRandomQuote();
   }
 });

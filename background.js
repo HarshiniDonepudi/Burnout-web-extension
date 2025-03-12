@@ -136,7 +136,10 @@ chrome.idle.onStateChanged.addListener((newState) => {
           message: 'You have been active for over 2 hours without a break.'
         });
       }
-      sendDataToGoogleSheets({ event: 'session', duration: sessionDuration });
+      sendDataToGoogleSheets({
+        event: 'session',
+        data: { duration: sessionDuration } 
+      });
       sessionStart = null;
     }
   }

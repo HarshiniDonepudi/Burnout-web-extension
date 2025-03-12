@@ -1,183 +1,146 @@
+/* Optional custom font (adjust if you have one) */
 @font-face {
-    font-family: 'Roca Bold';
-    src: url('assets/RocaBold.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-  }
+  font-family: 'Roca Bold';
+  src: url('assets/RocaBold.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
 
 body {
-    font-family: "Nunito Sans", sans-serif;
-    /* Vertical gradient */
-    background: linear-gradient(135deg, #B5E9E9, #FCE5EF, #FFEBB2, #FFCABB);
-  
-    /* Make the background taller than the element (200% height) */
-    background-size: 100% 200%;
-  
-    /* Animate the background position vertically */
-    animation: verticalGradient 20s ease-in-out infinite;
-  
-    color: #2D5957;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-  }
-  
-  @keyframes verticalGradient {
-    0% {
-      background-position: 0% 0%;
-    }
-    50% {
-      /* Shift down so the bottom part of the gradient is now visible */
-      background-position: 0% 50%;
-    }
-    100% {
-      /* Return to the starting position */
-      background-position: 50% 0%;
-    }
-  }
-  
+  font-family: "Nunito Sans", sans-serif;
+  /* Animated gradient background */
+  background: linear-gradient(135deg, #B5E9E9, #FCE5EF, #FFEBB2, #FFCABB);
+  background-size: 100% 200%;
+  animation: verticalGradient 20s ease-in-out infinite;
 
+  color: #2D5957;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+@keyframes verticalGradient {
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 50% 0%;
+  }
+}
 
 h2 {
-    font-family: "Roca Bold", sans-serif;
-    margin-bottom: 40px;
+  font-family: "Roca Bold", sans-serif;
+  margin-bottom: 40px;
 }
 
+/* Container for questions and quotes */
 #content {
-    /* Transparent white background with some alpha */
- 
-
-  /* Optional: add a slight border to emphasize the glass */
-  border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 12px;
-    padding: 20px;
-    border-radius: 10px;
-    max-width: 500px;
-    width: 90%;
+  padding: 20px;
+  max-width: 500px;
+  width: 90%;
 }
 
-button {
-    background: #3FA5AD;
-    color: white;
-    font-family: "Roca Bold", sans-serif;
-    border: none;
-    padding: 10px 15px;
-    cursor: pointer;
-    border-radius: 5px;
-    margin-top: 10px;
-    align-items: center;
-}
-
+/* Submit button */
 #submit-button {
-    background: #3FA5AD;
-    color: white;
-    font-family: "Roca Bold", sans-serif;
-    border: none;
-    padding: 10px 15px;
-    cursor: pointer;
-    border-radius: 50px;
-    margin-top: 10px;
-    align-items: center;
-    display: block;
-    margin: 40px auto;
-    width: 120px;
-    height: 50px;
-    font-size: 15px;
-   
+  background: #3FA5AD;
+  color: white;
+  font-family: "Roca Bold", sans-serif;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  border-radius: 50px;
+  margin-top: 10px;
+  display: block;
+  margin: 40px auto;
+  width: 120px;
+  height: 50px;
+  font-size: 15px;
 }
 
 button:hover {
-    background: #2D5957;
+  background: #2D5957;
 }
 
+/* 1-5 scale buttons */
 .likert-btn {
-    background: white;
-    color: #3FA5AD;
-    border: 2px solid #3FA5AD;
-    padding: 5px 10px;
-    margin: 5px;
-    cursor: pointer;
+  background: white;
+  color: #3FA5AD;
+  border: 2px solid #3FA5AD;
+  padding: 5px 10px;
+  margin: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease, color 0.3s ease;
 }
-
+.likert-btn:hover,
 .likert-btn.selected {
-    background: #3FA5AD;
-    color: white;
+  background: #3FA5AD;
+  color: white;
 }
 
 .hidden {
-    display: none;
+  display: none;
 }
-/* Counter Box */
-#counter-box {
-    position: fixed;          /* stays pinned to the viewport */
-    bottom: 20px;             /* adjust vertical distance from bottom */
-    left: 50%;                /* centers horizontally in the viewport */
-    transform: translateX(-50%); /* actually shifts it back left to be center */
-    background: transparent;  /* or a color if you want a background box */
-    font-size: 16px;          /* adjust to match your design */
-    color: #5C6C5C;           /* example color that might match your theme */
-    padding: 8px 0; /* ensures readability over background gradient */
-  }
-  
-  #daily-counter-text {
-    font-size: 16px;
-    color: #3FA5AD;
-  }
-  
-  /* Hide/Show */
-  .hidden {
-    display: none;
-  }
-  
-  /* Likert Buttons (for scale questions) */
-  .likert-btn {
-    background: white;
-    color: #3FA5AD;
-    border: 2px solid #3FA5AD;
-    padding: 5px 10px;
-    margin: 5px;
-    cursor: pointer;
-    transition: background 0.3s ease, color 0.3s ease;
-  }
-  .likert-btn:hover,
-  .likert-btn.selected {
-    background: #3FA5AD;
-    color: white;
-  }
-  
-  /* Insights Button */
-  #insights-btn {
-    background: rgba(255, 255, 255, 0.572);
-    color: rgb(2, 2, 2);
-    font-family: "Roca Bold", sans-serif;
-    border: none;
-    padding: 10px 15px;
-    cursor: pointer;
-    width: 150px;
-    height: 50px;
-    font-size: 15px;
-    border-radius:50px;
-    margin-top: 10px;
-    align-items: center;
-  }
-  
-  /* Unlocked color after 7/7 days */
-  /* #insights-btn.unlocked {
-    
-    background: #3FA5AD; /* or any color you prefer for "unlocked" */
 
-  /* #insights-btn.unlocked:hover {
-    background: #2D5957;
-  }  */
-  #progress-text{
-    font-family: 'Roca Bold', sans-serif;
-    color:#3FA5AD
-  }
-  #subtext{
-    font-family: "Nunito Sans", sans-serif;
-    font-size: 14px;
-   
-  }
+/* Bottom counter box */
+#counter-box {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: transparent;
+  font-size: 16px;
+  color: #5C6C5C;
+  padding: 8px 0;
+}
+
+.progress-text {
+  font-family: "Roca Bold", sans-serif;
+  color: #3FA5AD;
+  font-size: 16px;
+}
+
+/* Progress bar container */
+#progress-container {
+  width: 80%;
+  background-color: rgba(255, 255, 255, 0.572);
+  border-radius: 50px;
+  overflow: hidden;
+  height: 8px;
+  margin: 10px auto;
+}
+
+/* Dynamic bar itself */
+#progress-bar {
+  height: 8px;
+  width: 0%;
+  background-color: #3FA5AD;
+  transition: width 0.5s ease-in-out;
+}
+
+/* "Insights" button styling */
+#insights-btn {
+  background: rgba(255, 255, 255, 0.572);
+  color: #2D5957;
+  font-family: "Roca Bold", sans-serif;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  width: 150px;
+  height: 50px;
+  font-size: 15px;
+  border-radius: 50px;
+  margin-top: 10px;
+  align-items: center;
+}
+
+.subtext {
+  font-family: "Nunito Sans", sans-serif;
+  font-size: 14px;
+}

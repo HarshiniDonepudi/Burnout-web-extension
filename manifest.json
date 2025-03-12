@@ -8,11 +8,9 @@
     "tabs",
     "identity",
     "idle",
-    "webNavigation",
     "alarms",
     "notifications",
-    "webRequest",
-    "scripting"
+    "webRequest"
   ],
   "host_permissions": [
     "<all_urls>",
@@ -20,7 +18,7 @@
     "https://www.googleapis.com/*"
   ],
   "oauth2": {
-    "client_id": "609443598764-q5qt1uj66a7l275e3n8fc8btnaded5ul.apps.googleusercontent.com",
+    "client_id": "771547579484-ora5jhdsfk1gu0cu6jae91hoihjkedis.apps.googleusercontent.com",
     "scopes": [
       "https://www.googleapis.com/auth/calendar.readonly"
     ]
