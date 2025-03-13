@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Burnout Tracker",
-  "version": "1.3",
+  "version": "1.4",
   "description": "Tracks your browsing and calendar data to help detect burnout. Data is synced immediately to Google Sheets.",
   "permissions": [
     "storage",

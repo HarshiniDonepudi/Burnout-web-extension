@@ -216,32 +216,28 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Decide mode based on current time.
-  // (For testing, adjust these ranges as needed.)
-  // Example:
-  // Morning: 5:00–11:59, Afternoon: 12:00–16:59, Evening: 17:00–23:59.
-  // const hour = new Date().getHours();
-  // let mode;
-  // if (hour >= 5 && hour < 12) {
-  //   mode = "morning";
-  // } else if (hour >= 12 && hour < 17) {
-  //   mode = "afternoon";
-  // } else {
-  //   mode = "evening";
-  // }
-  // console.log("Current mode:", mode);
-  const now = new Date();
-  const hours = now.getHours();
-  const minutes = now.getMinutes();
+  const hour = new Date().getHours();
   let mode;
-  
-  if (hours === 20 && minutes >= 00 && minutes < 28) {
+  if (hour >= 5 && hour < 12) {
     mode = "morning";
-  } else if (hours === 20 && minutes >= 28 && minutes < 29) {
+  } else if (hour >= 12 && hour < 17) {
     mode = "afternoon";
   } else {
     mode = "evening";
   }
+  console.log("Current mode:", mode);
+  // const now = new Date();
+  // const hours = now.getHours();
+  // const minutes = now.getMinutes();
+  // let mode;
+  
+  // if (hours === 20 && minutes >= 00 && minutes < 28) {
+  //   mode = "morning";
+  // } else if (hours === 20 && minutes >= 28 && minutes < 29) {
+  //   mode = "afternoon";
+  // } else {
+  //   mode = "evening";
+  // }
   
   console.log("Current mode:", mode);
   // Load or initialize checkinState (stored as "checkinState" in localStorage).
