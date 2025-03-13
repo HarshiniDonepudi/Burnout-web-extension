@@ -13,7 +13,7 @@ const defaultLeisureDomains = ['youtube.com', 'netflix.com', 'reddit.com', 'twit
 const stressKeywords = ['burnout', 'stress', 'overworked', 'exhausted'];
 
 // Google Sheets endpoint – replace with your deployed Google Apps Script URL.
-const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbwFRNT2x06Npid0mH9VMON3EvQCvIY99PyysGzFb2No_UtC688RwJH48n1oBI0oMA3Qxw/exec";
+const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbwiNk60EG1M0HY8bASEN46LzfspBNXy3vQe8PVMGrFaALnnqNTSOUMomVhkvrQSwHk4oQ/exec";
 
 
 // ---------- Initialization ----------
