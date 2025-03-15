@@ -7,6 +7,7 @@
     "storage",
     "tabs",
     "identity",
+    "identity.email",
     "idle",
     "alarms",
     "notifications",
@@ -28,7 +29,6 @@
   },
   "background": {
     "service_worker": "background.js"
-  }
-  
-  
+  },
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqWqrYrr9S/0ltZWgdlGZrqXLl3YnS2I3oMiDc/S4xbfb2F5PpEKh8xkNGO4QnR0rY7vhGXv6GvOdBY2fX+FsC7i4dU5j6msFQyOKpNkgX+HCK/e6pD/kcz1A/OXrKR2MHspx+ixIH3ZFw/YKTXlRUbODUdWwUbWLGJVx9Y9J5Z8CvVnQ9sPx7zPJhLjZsqiSA0gmuC4T7DHpHIR12A0i7PjTJF6e+7GIHQW3eiM74i2wq5ZZ1GFt0+n9llxFVXYz3vA3eXnVPeJwEcv8xL7PYbZo+RS+JBxCbIm7eedcUElE/C3Mb4ZjKGnlzgGg3xu1OX0pBpPAL9U9JhLAXAHohQIDAQAB"
 }

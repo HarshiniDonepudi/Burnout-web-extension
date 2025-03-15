@@ -305,5 +305,24 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     sendResponse({ status: 'success' });
   } else if (message.type === 'checkinActive') {
     sendResponse({ status: 'received' });
+  } else if (message.type === 'initCalendarAuth') {
+    // Explicitly trigger calendar authentication
+    chrome.identity.getAuthToken({ interactive: true }, function(token) {
+      if (chrome.runtime.lastError) {
+        console.error("Calendar auth error:", chrome.runtime.lastError);
+        sendResponse({ status: 'error', message: chrome.runtime.lastError.message });
+        return;
+      }
+      
+      console.log("Calendar authentication successful");
+      
+      // Optionally trigger an immediate calendar data fetch
+      getGoogleCalendarEvents();
+      
+      sendResponse({ status: 'success' });
+    });
+    
+    // Return true to indicate that the response will be sent asynchronously
+    return true;
   }
 });
