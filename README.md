@@ -2,7 +2,7 @@
 
 The **Burnout Tracker** is a Chrome extension designed to help users monitor their browsing habits and detect early signs of burnout. It tracks activity such as time spent on work vs. leisure websites, tab switching rates, and stress-related searches. In addition, the extension prompts users with periodic check‑in questions—focusing on time-related factors—that lock the screen until an answer is submitted.
 
-Data is sent immediately to a Google Sheet via a Google Apps Script web app, allowing you to review and analyze your metrics over time. [Link Text](https://docs.google.com/spreadsheets/d/11vdEADa618aJelUlYplTn0oNLHTi1qBi5e5-Ctj6Fe8/edit?gid=0#gid=0)
+Data is sent immediately to a Google Sheet via a Google Apps Script web app, allowing you to review and analyze your metrics over time. [Link Text]([https://docs.google.com/spreadsheets/d/11vdEADa618aJelUlYplTn0oNLHTi1qBi5e5-Ctj6Fe8/edit?gid=0#gid=0](https://docs.google.com/spreadsheets/d/1iOnp32DGPP-6Okmy4HWDuMnkDHs4cjxrut57GfJ37Sc/edit?gid=0#gid=0))
 
 
 ## Features
